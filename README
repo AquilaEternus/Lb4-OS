@@ -1,0 +1,19 @@
+Name: Jose Hernandez
+Lab 4 Readme
+
+Notes:
+	The C-LOOK scheduler was tested using the bash script "tester.sh",
+	which echo's the names of the files/directories in the current 
+	directory to a file named "testdata" and then reads from that file 
+	and echo's the contents line by line to the terminal.
+
+How to Test C-LOOK Scheduler using:
+
+Step 0: Make sure to be in the same directory as the "boot", "bin", 
+	"sys" directories, etc.
+Step 1: Run "dmesg -C" to the clear log if needed.
+Step 2: Run "bash tester.sh"
+Step 3: Run "dmesg > results" to pipe the output of dmesg to a file 
+	named results.
+Step 4: If going to run again, remove the "results" and "testdata" files 
+	with rm command.
