@@ -28,7 +28,7 @@ static int clook_dispatch(struct request_queue *q, int force)
 		list_del_init(&rq->queuelist);
 		elv_dispatch_sort(q, rq);
 		direction = (rq_data_dir(rq) == READ) ? 'R' : 'W';
-		printk("[CLOOK] dsp %c %lu", direction, blk_rq_pos(rq));
+		printk("[CLOOK] dsp %c %lu\n", direction, blk_rq_pos(rq));
 		return 1;
 	}
 	return 0;
@@ -47,7 +47,7 @@ static void clook_add_request(struct request_queue *q, struct request *rq)
 	}
 	list_add_tail(&rq->queuelist, curr);
 	direction = (rq_data_dir(rq) == READ) ? 'R' : 'W';
-	printk("[CLOOK] add %c %lu", direction, blk_rq_pos(rq));
+	printk("[CLOOK] add %c %lu\n", direction, blk_rq_pos(rq));
 }
 
 static struct request *
