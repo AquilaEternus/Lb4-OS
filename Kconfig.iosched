@@ -43,9 +43,12 @@ config IOSCHED_CLOOK
 	tristate "CLOOK I/O scheduler"
 	default y
 	---help---
-	  The CLOOK I/O scheduler keeps requests in a queue, sorted based on physical
-	  location. It does not move the head until it reached the end of the disk and
-	  returns to the other end to service the rest that were missed.	
+	  The CLOOK I/O scheduler keeps requests in a queue sorted based on 
+          location in physical memory. It does not move the head until it 
+          reaches the end of the disk and returns to the other end to 
+	  service the rest of the requests in ascending order until 
+	  reaching the end again.
+	
 choice
 	prompt "Default I/O scheduler"
 	default DEFAULT_CFQ

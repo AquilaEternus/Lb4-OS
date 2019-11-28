@@ -1,5 +1,7 @@
 /*
  * elevator clook
+ * Modified from noop-iosched.c to implement C-LOOK algorithm.
+ * Modified by: Jose Hernandez
  */
 #include <linux/blkdev.h>
 #include <linux/elevator.h>
@@ -18,6 +20,10 @@ static void clook_merged_requests(struct request_queue *q, struct request *rq,
 	list_del_init(&next->queuelist);
 }
 
+/* Added a printk statement after a request had been sent to the dispatch
+ * queue to track the direction (READ or WRITE) and the location of the
+ * request.
+ */
 static int clook_dispatch(struct request_queue *q, int force)
 {
 	struct clook_data *nd = q->elevator->elevator_data;
@@ -34,11 +40,21 @@ static int clook_dispatch(struct request_queue *q, int force)
 	return 0;
 }
 
+/* Traverses through the queuelist and places the request passed
+ * to rq parameter before the request with a larger location in memory. This 
+ * sorts the lists of requests in ascending order and implements the C-LOOK 
+ * algorithm. After the request has been added, a printk statement states 
+ * the direction of the request(READ or WRITE) and the location of 
+ * the request block.
+ */
 static void clook_add_request(struct request_queue *q, struct request *rq)
 {
 	struct clook_data *nd = q->elevator->elevator_data;
+	/*Pointer to the current rq in the list*/
 	struct list_head *curr = NULL;
 	char direction;
+	/*Traverses the linked list to find where rq can be placed based on
+	its location.*/
 	list_for_each(curr, &nd->queue){
 		struct request *currReq = list_entry(curr, struct request, queuelist);
 		if(rq_end_sector(rq) < rq_end_sector(currReq))
